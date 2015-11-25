@@ -1,0 +1,26 @@
+{
+  "name": "product_catalogue",
+  "version": "0.0.1",
+  "description": "Product catalogue",
+  "main": "app.js",
+  "dependencies": {
+    "express": "~4.13.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guchiam/node_catalogue.git"
+  },
+  "keywords": [
+    "Node",
+    "Product",
+    "Catalogue"
+  ],
+  "author": "Elena Zhuga",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "92eb75c9fb0a3e4615fbc0308f4b3b2bb60e1177"
+}
