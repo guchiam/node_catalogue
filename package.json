@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "~4.13.3",
     "mongoose": "^4.2.7",
-    "nconf": "~0.8.2"
+    "nconf": "~0.8.2",
+    "body-parser": "~1.14.1"
   },
   "devDependencies": {},
   "scripts": {

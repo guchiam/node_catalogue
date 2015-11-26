@@ -3,7 +3,7 @@ var mongoose = require('lib/mongoose');
 var topicSchema = mongoose.Schema({
     name: {
         type: String,
-        pnique: true,
+        unique: true,
         required: true,
         trim: true
     },
