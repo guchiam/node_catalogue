@@ -4,7 +4,9 @@
   "description": "Product catalogue",
   "main": "app.js",
   "dependencies": {
-    "express": "~4.13.3"
+    "express": "~4.13.3",
+    "mongoose": "^4.2.7",
+    "nconf": "~0.8.2"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,31 +1,11 @@
-var express = require('express'),
-    config = require("./config/dev"),
-    mongoose = require('mongoose');
+var express  = require('express'),
+    config   = require("./config/index");
 
 var app = express();
 
-mongoose.connect(config.mongodb.db);
+app.use(require("./modules/topic/router"));
 
-
-/* test**/
-
-var Cat = mongoose.model('brand', { name: String });
-
-var kitty = new Cat({ name: 'Zildjianhjklhjkl' });
-kitty.save(function (err) {
-    if (err) // ...
-        console.log('meow');
-});
-
-/*---------*/
-
-app.use(require("./modules/categories/router"));
-
-app.get('/', function (req, res) {
-    res.send('Hello World!');
-});
-
-var server = app.listen(config.express.port, config.express.ip, function(){
+var server = app.listen(config.main.port, config.main.ip, function(){
     var host = server.address().address;
     var port = server.address().port;
 
