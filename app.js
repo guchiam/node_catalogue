@@ -4,9 +4,10 @@ var express  = require('express'),
 
 var app = express();
 
-app.use(require("./modules/topic/router"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(require("./modules/topic/router"));
 
 var server = app.listen(config.main.port, config.main.ip, function(){
     var host = server.address().address;

@@ -9,9 +9,9 @@ controller.prototype = {
     create: function (req, res) { // create new topic
         //res.send('Test need testing!');
         //var theTopic = new Topic({name:'', parent_id:'5656f6acd54110f62fd2155c'});
-        //theTopic.save(function(err, theTopic, affected){
-        //    console.log(err, theTopic, affected);
-        //});
+        theTopic.save(function(err, theTopic, affected){
+            console.log(err, theTopic, affected);
+        });
         //console.log(theTopic.get('name'));
         //console.log(theTopic.get('_id'));
 
