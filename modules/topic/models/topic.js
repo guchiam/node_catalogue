@@ -1,15 +1,23 @@
-var mongoose = require('mongoose'),
-    config   = require('/config/index.js');
+var mongoose = require('lib/mongoose');
 
-var db = mongoose.connection;
-
-var Topic = mongoose.Schema({
-    name: String
+var topicSchema = mongoose.Schema({
+    name: {
+        type: String,
+        pnique: true,
+        required: true,
+        trim: true
+    },
+    parent_id: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }],
+        default: null
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    }
 });
 
-Topic.methods.create = function(){
-    console.log("Test create");
-    console.log(this.get('name'));
-};
 
-mongoose.connect(config.mongodb.db);
+var Topic  = mongoose.model('Topic', topicSchema);
+
+module.exports = Topic;
