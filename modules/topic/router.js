@@ -1,6 +1,11 @@
 var router     = require("express").Router();
 var controller = require("./controllers/index");
 
-router.post('/categories', controller.create);
+router.get('/topics', controller.list);
+router.get('/topic/:id', controller.get);
+router.get('/topic/:id/subtopics', controller.subtopics);
+router.post('/topic', controller.create);
+router.delete('/topic/:id', controller.delete);
+router.put('/topic/:id', controller.update);
 
 module.exports = router;

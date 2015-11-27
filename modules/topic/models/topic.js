@@ -17,6 +17,9 @@ var topicSchema = mongoose.Schema({
     }
 });
 
+topicSchema.methods.findChild = function (cb) {
+    return this.model('Topic').find({"parent_id": this._id}, cb);
+};
 
 var Topic  = mongoose.model('Topic', topicSchema);
 
