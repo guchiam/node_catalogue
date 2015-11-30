@@ -6,6 +6,6 @@ router.get('/topic/:id', controller.get);
 router.get('/topic/:id/subtopics', controller.subtopics);
 router.post('/topic', controller.create);
 router.delete('/topic/:id', controller.delete);
-router.put('/topic/:id', controller.update);
+router.patch('/topic/:id', controller.update);
 
 module.exports = router;

@@ -3,11 +3,9 @@ var Topic = require('../models/topic.js'),
     HttpError = require('error').HttpError;
     ValidationError = require('error').ValidationError;
 
-var controller = function() {};
+var controller = function() {
 
-controller.prototype = {
-
-    get: function (req, res, next) {
+    this.get = function (req, res, next) {
         Topic.findById(req.params.id, function(err, topic) {
             if (err || !topic) {
                 return next(new HttpError(404, 'Topic not found'));
@@ -17,7 +15,7 @@ controller.prototype = {
         });
     },
 
-    create: function (req, res, next) {
+    this.create = function (req, res, next) {
 
         req.checkBody('name', 'Name of topic is required').notEmpty();
         req.checkBody('parent_id', 'Parent topic is not found').optional().isMongoId();
@@ -37,7 +35,7 @@ controller.prototype = {
         });
     },
 
-    update: function (req, res, next) {
+    this.update = function (req, res, next) {
         var id = req.params.id;
 
         Topic.findById(id, function(err, topic) {
@@ -49,19 +47,20 @@ controller.prototype = {
             req.checkBody('parent_id', 'Parent topic is not found').optional().isMongoId();
 
             req.asyncValidationErrors().then(function(){
-                Topic.update({"_id":id}, req.body,
-                    function (err) {
-                        if (err) return next(err);
-                        console.log(topic);
-                        res.json({ error: '', data: {message: "Topic has been successfully updated.", topic : topic} });
-                    });
+
+                topic.name = "aaa";
+                topic.save(function(err){
+                    if (err) return next(err);
+                    res.json({ error: '', data: {message: "Topic has been successfully updated.", topic : topic} });
+                });
+
             }).catch(function(errors) {
                 return next(new ValidationError(400, errors));
             });
         });
     },
 
-    delete: function (req, res, next) {
+    this.delete = function (req, res, next) {
         var id = req.params.id;
 
         Topic.findById(id, function(err, topic) {
@@ -83,17 +82,16 @@ controller.prototype = {
         });
     },
 
-    list: function (req, res, next) {
+    this.list = function (req, res, next) {
         Topic.find({}, function(err, topics) {
             if (err) return next(err);
             res.json({ error: '', data: topics });
         });
     },
 
-    subtopics: function (req, res, next) {
-        var theParentId = new mongoose.Types.ObjectId(req.params.id);
+    this.subtopics = function (req, res, next) {
 
-        Topic.find({"parent_id": theParentId}, function(err, topics) {
+        Topic.find({"parent_id": req.params.id}, function(err, topics) {
             if (err || !topic) return next(err);
             res.json({ error: '', data: topics });
         });
