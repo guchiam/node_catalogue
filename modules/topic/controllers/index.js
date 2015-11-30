@@ -1,5 +1,4 @@
 var Topic = require('../models/topic.js'),
-    mongoose = require('lib/mongoose'),
     HttpError = require('error').HttpError;
     ValidationError = require('error').ValidationError;
 
@@ -21,10 +20,8 @@ var controller = function() {
         req.checkBody('parent_id', 'Parent topic is not found').optional().isMongoId();
 
         req.asyncValidationErrors().then(function(){
-            var name = (req.body.name) ? req.body.name : "";
-            var parent_id = (req.body.parent_id) ? req.body.parent_id : null;
 
-            var theTopic = new Topic({name:name, parent_id:parent_id});
+            var theTopic = new Topic({name:req.body.name, parent_id:req.body.parent_id});
             theTopic.save(function(err, theTopic){
                 if (err) return next(err);
 
@@ -69,7 +66,6 @@ var controller = function() {
             }
 
             topic.findCountChild(function(err, count){
-                console.log(err, count);
                 if (count > 0) {
                     return next(new HttpError(400, 'You cannot delete this topic. It has child topics'));
                 } else {
