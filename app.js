@@ -26,6 +26,7 @@ app.use(expressValidator({
 
 require('config/routers')(app);
 
+
 var server = app.listen(config.main.port, config.main.ip, function(){
     var host = server.address().address;
     var port = server.address().port;
