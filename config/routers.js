@@ -1,4 +1,5 @@
-var HttpError = require('error').HttpError;
+var HttpError = require('error').HttpError,
+    ValidationError = require('error').ValidationError;
 
 module.exports = function(app) {
     app.use(require("modules/topic/router"));
@@ -8,7 +9,10 @@ module.exports = function(app) {
     function errorHandler(err, req, res, next) {
         if (err instanceof HttpError){
             res.status(err.status).json({ error: err.message, data: '' });
-        } else {
+        } else if (err instanceof ValidationError){
+            res.status(err.status).json({ error: err.message, data: '' });
+        }
+        else {
             res.status(500).json({ error: err.message, data: '' });
         }
     }

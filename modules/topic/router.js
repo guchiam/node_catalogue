@@ -1,5 +1,5 @@
 var router     = require("express").Router();
-var controller = require("./controllers/index");
+var controller = require("./controllers/index");;
 
 router.get('/topics', controller.list);
 router.get('/topic/:id', controller.get);

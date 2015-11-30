@@ -1,11 +1,28 @@
 var express  = require('express'),
     config   = require("config"),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    expressValidator = require('express-validator');
 
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+        var namespace = param.split('.')
+            , root    = namespace.shift()
+            , formParam = root;
+
+        while(namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param : formParam,
+            msg   : msg,
+            value : value
+        };
+    }
+}));
 
 require('config/routers')(app);
 
