@@ -6,9 +6,8 @@ var controller = function() {
 
     this.get = function (req, res, next) {
         Topic.findById(req.params.id, function(err, topic) {
-            if (err || !topic) {
-                return next(new HttpError(404, 'Topic not found'));
-            }
+
+            if (err) return next(err);
 
             res.json({ error: '', data: topic});
         });
@@ -36,9 +35,7 @@ var controller = function() {
         var id = req.params.id;
 
         Topic.findById(id, function(err, topic) {
-            if (err || !topic) {
-                return next(new HttpError(404, 'Topic not found'));
-            }
+            if (err) return next(err);
 
             req.checkBody('name', 'Name of topic is required').notEmpty();
             req.checkBody('parent_id', 'Parent topic is not found').optional().isMongoId();
@@ -61,9 +58,7 @@ var controller = function() {
         var id = req.params.id;
 
         Topic.findById(id, function(err, topic) {
-            if (err || !topic) {
-                return next(new HttpError(404, 'Topic not found'));
-            }
+            if (err) return next(err);
 
             topic.findCountChild(function(err, count){
                 if (count > 0) {
@@ -88,7 +83,7 @@ var controller = function() {
     this.subtopics = function (req, res, next) {
 
         Topic.find({"parent_id": req.params.id}, function(err, topics) {
-            if (err || !topic) return next(err);
+            if (err) return next(err);
             res.json({ error: '', data: topics });
         });
     }

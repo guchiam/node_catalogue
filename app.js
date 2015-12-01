@@ -26,6 +26,10 @@ app.use(expressValidator({
 
 require('config/routers')(app);
 
+process.on('uncaughtException', function(err) {
+    console.log('Threw Exception: ', err);
+    process.exit(0);
+});
 
 var server = app.listen(config.main.port, config.main.ip, function(){
     var host = server.address().address;
