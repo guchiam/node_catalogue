@@ -86,6 +86,12 @@ var controller = function() {
             if (err) return next(err);
             res.json({ error: '', data: topics });
         });
+    },
+
+    this.getproducts = function (req, res, next) {
+        // TODO: get producta by topic id
+        console.log("Topic products list view");
+        res.end();
     }
 
 };

@@ -4,6 +4,7 @@ var HttpError = require('error').HttpError,
 
 module.exports = function(app) {
     app.use(require("modules/topic/router"));
+    app.use(require("modules/products/router"));
 
     app.use(errorHandler);
 
