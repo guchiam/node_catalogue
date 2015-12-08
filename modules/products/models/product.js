@@ -1,4 +1,12 @@
 var mongoose = require('lib/mongoose');
+var uniqueTitleValidator = {
+    unique : {
+        message : "Title is duplicated"
+    }
+
+    //validate({message: "Title is required"}, 'required'),
+    //validate({message: "Title is duplicated"}, 'unique');
+}
 
 var productSchema = mongoose.Schema({
     title: {
@@ -8,7 +16,11 @@ var productSchema = mongoose.Schema({
             sparse: true
         }, // Title (unique)
         required: true,
-        trim: true
+        trim: true,
+        validate: [function(val, res){
+            console.log(val, res);
+
+        }, 'Uh oh, {PATH} does not equal "something".']
     },
     slug: {
         type: String,
@@ -22,9 +34,9 @@ var productSchema = mongoose.Schema({
         set: setSlug
     },
     price: {
-        type: Number, // Price (decimal)
+        type: Number/*, // Price (decimal)
         get: getPrice,
-        set: setPrice
+        set: setPrice*/
     },
     description: {
         type: String,

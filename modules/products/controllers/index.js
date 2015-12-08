@@ -15,7 +15,6 @@ var controller = function() {
         req.checkBody('title', 'Title is required').notEmpty();
         req.checkBody('price', 'Price is required').notEmpty();
         req.checkBody('topic_id', 'Topic is not found').notEmpty().isMongoId();
-       // req.checkBody('topic_id', 'Topic is not found').optional().isMongoId();
 
         req.asyncValidationErrors().then(function(){
 
@@ -29,16 +28,16 @@ var controller = function() {
                 thumbnail: req.body.thumbnail,
                 properties: req.body.properties
             });
-            console.log(theProduct);
-            /*theTopic.save(function(err, theTopic){
+
+            theProduct.save(function(err, theProduct){
                 if (err) return next(err);
 
-                res.json({ error: '', data: {message: "Topic has been successfully created.", topic : theTopic} });
-            });*/
+                res.json({ error: '', data: {message: "Product has been successfully created.", product : theProduct} });
+            });
         }).catch(function(errors) {console.log(errors);
-            //return next(new ValidationError(400, errors));
+            return next(new ValidationError(400, errors));
         });
-res.end();
+
         /*Product properties:
          Title (unique)
          Slug (transliterated title, unique)
