@@ -1,6 +1,6 @@
 var Topic = require('../models/topic.js'),
     HttpError = require('error').HttpError;
-    ValidationError = require('error').ValidationError;
+    CatalogValidationError = require('error').CatalogValidationError;
 
 var controller = function() {
 
@@ -27,7 +27,7 @@ var controller = function() {
                 res.json({ error: '', data: {message: "Topic has been successfully created.", topic : theTopic} });
             });
         }).catch(function(errors) {
-            return next(new ValidationError(400, errors));
+            return next(new CatalogValidationError(400, errors));
         });
     },
 
@@ -49,7 +49,7 @@ var controller = function() {
                 });
 
             }).catch(function(errors) {
-                return next(new ValidationError(400, errors));
+                return next(new CatalogValidationError(400, errors));
             });
         });
     },

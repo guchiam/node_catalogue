@@ -1,6 +1,6 @@
 var Product = require('../models/product.js'),
     HttpError = require('error').HttpError;
-    ValidationError = require('error').ValidationError;
+    CatalogValidationError = require('error').CatalogValidationError;
 
 var controller = function() {
 
@@ -28,25 +28,15 @@ var controller = function() {
                 thumbnail: req.body.thumbnail,
                 properties: req.body.properties
             });
-
+console.log(theProduct);
             theProduct.save(function(err, theProduct){
                 if (err) return next(err);
 
                 res.json({ error: '', data: {message: "Product has been successfully created.", product : theProduct} });
             });
-        }).catch(function(errors) {console.log(errors);
-            return next(new ValidationError(400, errors));
+        }).catch(function(errors) {
+            return next(new CatalogValidationError(400, errors));
         });
-
-        /*Product properties:
-         Title (unique)
-         Slug (transliterated title, unique)
-         Price (decimal)
-         Description
-         Photo urls list
-         Thumbnail url
-         Properties list (key=>value)
-         */
     },
 
     this.update = function (req, res, next) {

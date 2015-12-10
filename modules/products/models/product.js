@@ -1,12 +1,5 @@
-var mongoose = require('lib/mongoose');
-var uniqueTitleValidator = {
-    unique : {
-        message : "Title is duplicated"
-    }
-
-    //validate({message: "Title is required"}, 'required'),
-    //validate({message: "Title is duplicated"}, 'unique');
-}
+var mongoose = require('lib/mongoose'),
+    CatalogValidationError = require('error').CatalogValidationError;
 
 var productSchema = mongoose.Schema({
     title: {
@@ -14,24 +7,44 @@ var productSchema = mongoose.Schema({
         index: {
             unique: true,
             sparse: true
-        }, // Title (unique)
+        },
         required: true,
         trim: true,
-        validate: [function(val, res){
-            console.log(val, res);
-
-        }, 'Uh oh, {PATH} does not equal "something".']
+        validate: {
+            validator: function(value, next) {
+                var self = this;
+                var promise = Product.find({"title": value});
+                promise.then(function (product) {
+                        if (product && self.id !== product.id) {
+                            var error = new Error("Title already in use!");
+                            error.msg = "Title already in use!";
+                            error.http_code = 404;
+                            return next(new CatalogValidationError(404, [error]));
+                        }
+                        return next();
+                    });
+            }
+        }
     },
     slug: {
         type: String,
         index: {
             unique: true,
             sparse: true
-        }, // Slug (transliterated title, unique)
+        },
         required: true,
         trim: true,
-        get: getSlug,
-        set: setSlug
+        get: function(slug){
+            return slug;
+        },
+        set: function(slug){
+            return slug.toString().toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-')
+                .replace(/^-+/, '')
+                .replace(/-+$/, '');
+        }
     },
     price: {
         type: Number/*, // Price (decimal)
@@ -54,7 +67,14 @@ var productSchema = mongoose.Schema({
         trim: true
     },
     properties: [{ // Properties list (key=>value)
-        key: String,
+        key: {
+            type: String,
+            required: true,
+            index: {
+                unique: true,
+                sparse: true
+            }
+        },
         value: String
     }],
     topic_id: {
@@ -92,6 +112,11 @@ function setSlug(slug){
 var Product  = mongoose.model('Product', productSchema);
 
 module.exports = Product;
-
-
+/*
+Product.schema.path('title').validate(function (value, respond) {
+    Product.findOne({ title: value }, function (err, product) {
+        console.log(respond);
+        if(product) respond(false);
+    });
+}, 'This title is already used');*/
 /*Methods for listing must support sorting also.*/

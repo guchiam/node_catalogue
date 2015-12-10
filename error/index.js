@@ -10,9 +10,9 @@ function HttpError(status, message) {
     this.message = message || http.STATUS_CODES[status] || "Error";
 }
 
-function ValidationError(status, errors) {
+function CatalogValidationError(status, errors) {
     Error.apply(this, arguments);
-    Error.captureStackTrace(this, ValidationError);
+    Error.captureStackTrace(this, CatalogValidationError);
 
     var message = '';
 
@@ -25,8 +25,8 @@ function ValidationError(status, errors) {
 util.inherits(HttpError, Error);
 HttpError.prototype.name = 'HttpError';
 
-util.inherits(ValidationError, Error);
-ValidationError.prototype.name = 'ValidationError';
+util.inherits(CatalogValidationError, Error);
+CatalogValidationError.prototype.name = 'CatalogValidationError';
 
 exports.HttpError = HttpError;
-exports.ValidationError = ValidationError;
+exports.CatalogValidationError = CatalogValidationError;
