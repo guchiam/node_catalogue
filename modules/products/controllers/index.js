@@ -5,9 +5,21 @@ var Product = require('../models/product.js'),
 var controller = function() {
 
     this.getById = function (req, res, next) {
+        Product.findById(req.params.id, function(err, product) {
+
+            if (err) return next(err);
+
+            res.json({ error: '', data: product});
+        });
     },
 
     this.getBySlug = function (req, res, next) {
+        Product.find({"slug": req.params.slug}, function(err, product) {
+
+            if (err) return next(err);
+
+            res.json({ error: '', data: product});
+        });
     },
 
     this.create = function (req, res, next) {
@@ -28,7 +40,7 @@ var controller = function() {
                 thumbnail: req.body.thumbnail,
                 properties: req.body.properties
             });
-console.log(theProduct);
+
             theProduct.save(function(err, theProduct){
                 if (err) return next(err);
 

@@ -47,16 +47,23 @@ var productSchema = mongoose.Schema({
         }
     },
     price: {
-        type: Number/*, // Price (decimal)
-        get: getPrice,
-        set: setPrice*/
+        type: Number,
+        get: function(num){
+            return (num/100).toFixed(2);
+        },
+        set: function(num){
+            return num*100;
+        }
     },
     description: {
         type: String,
         trim: true
     },
     photos: [{
-        url: String, // Photo urls list
+        url: {
+            type: String,
+            required: true
+        },
         created: {
             type: Date,
             default: Date.now
@@ -66,14 +73,10 @@ var productSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    properties: [{ // Properties list (key=>value)
+    properties: [{
         key: {
             type: String,
-            required: true,
-            index: {
-                unique: true,
-                sparse: true
-            }
+            required: true
         },
         value: String
     }],
@@ -87,36 +90,6 @@ var productSchema = mongoose.Schema({
     }
 });
 
-// TODO: do it with anonim function
-function getPrice(num){
-    return (num/100).toFixed(2);
-}
-
-function setPrice(num){
-    return num*100;
-}
-
-function getSlug(slug){
-    return slug;
-}
-
-function setSlug(slug){
-    return slug.toString().toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w\-]+/g, '')
-        .replace(/\-\-+/g, '-')
-        .replace(/^-+/, '')
-        .replace(/-+$/, '');
-}
-
 var Product  = mongoose.model('Product', productSchema);
 
 module.exports = Product;
-/*
-Product.schema.path('title').validate(function (value, respond) {
-    Product.findOne({ title: value }, function (err, product) {
-        console.log(respond);
-        if(product) respond(false);
-    });
-}, 'This title is already used');*/
-/*Methods for listing must support sorting also.*/
