@@ -5,7 +5,7 @@
 * GET /topics - get topic list
 * GET /topic/:id - get information about one topic
 * GET /topic/:id/subtopics - get subtopics of parent topic
-* GET /topic/:id/subtopics - get products for the topic
+* GET /topic/:id/products - get products for the topic
 * POST /topic - create a topic
 * DELETE /topic/:id - delete a topic
 * PATCH /topic/:id - update a topic
