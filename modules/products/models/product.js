@@ -48,11 +48,11 @@ var productSchema = mongoose.Schema({
     },
     price: {
         type: Number,
-        get: function(num){
-            return (num/100).toFixed(2);
+        get: function(num){return num;
+            //return (num/100).toFixed(2);
         },
         set: function(num){
-            return num*100;
+            return num;
         }
     },
     description: {

@@ -25,6 +25,11 @@ topicSchema.methods.findCountChild = function (cb) {
     return this.model('Topic').count({"parent_id": this._id}, cb);
 };
 
+topicSchema.methods.findCountProducts = function (cb) {
+
+    return this.model('Product').count({"topic_id": this._id}, cb);
+};
+
 var Topic  = mongoose.model('Topic', topicSchema);
 
 module.exports = Topic;
