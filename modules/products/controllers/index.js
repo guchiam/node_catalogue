@@ -55,6 +55,16 @@ var controller = function() {
     },
 
     this.delete = function (req, res, next) {
+        var id = req.params.id;
+
+        Product.findById(id, function(err, product) {
+            if (err) return next(err);
+
+            Product.remove({ _id: req.params.id}, function(err) {
+                if (err) return next(err);
+                res.json({ error: '', data: {"message": "Product has been successfully removed."} });
+            });
+        });
     },
 
     this.list = function (req, res, next) {

@@ -54,6 +54,7 @@ var controller = function() {
         });
     },
 
+    // TODO:check if topic has products
     this.delete = function (req, res, next) {
         var id = req.params.id;
 
