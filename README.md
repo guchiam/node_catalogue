@@ -3,7 +3,7 @@
 ######used routers for topic
 
 * GET /topics - get topic list
-* GET /topic/:id - get information about one topic
+* GET /topic/:id - get information about one topic by ID or by SLUG
 * GET /topic/:id/subtopics - get subtopics of parent topic
 * GET /topic/:id/products - get products for the topic
 * POST /topic - create a topic

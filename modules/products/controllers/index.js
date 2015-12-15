@@ -1,4 +1,5 @@
 var Product = require('../models/product.js'),
+    mongoose = require('lib/mongoose'),
     HttpError = require('error').HttpError;
     CatalogValidationError = require('error').CatalogValidationError;
 
@@ -6,16 +7,11 @@ var controller = function() {
 
     var perPage = 10;
 
-    this.getById = function (req, res, next) {
-        Product.findById(req.params.id, function(err, product) {
+    this.getByOneProduct = function (req, res, next) {console.log(req.params.id);
 
-            if (err) return next(err);
-            res.json({ error: '', data: product});
-        });
-    },
+        var params = (mongoose.Types.ObjectId.isValid(req.params.id)) ? {_id:req.params.id} : {slug:req.params.id};
 
-    this.getBySlug = function (req, res, next) {
-        Product.find({"slug": req.params.slug}, function(err, product) {
+        Product.find(params, function(err, product) {
 
             if (err) return next(err);
             res.json({ error: '', data: product});
