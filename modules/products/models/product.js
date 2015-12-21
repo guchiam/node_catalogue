@@ -1,4 +1,5 @@
 var mongoose = require('lib/mongoose'),
+    slugify = require('transliteration').slugify,
     CatalogValidationError = require('error').CatalogValidationError;
 
 var productSchema = mongoose.Schema({
@@ -9,22 +10,7 @@ var productSchema = mongoose.Schema({
             sparse: true
         },
         required: true,
-        trim: true,
-        validate: {
-            validator: function(value, next) {
-                var self = this;
-                var promise = Product.find({"title": value});
-                promise.then(function (product) {
-                        if (product && self.id !== product.id) {
-                            var error = new Error("Title already in use!");
-                            error.msg = "Title already in use!";
-                            error.http_code = 404;
-                            return next(new CatalogValidationError(404, [error]));
-                        }
-                        return next();
-                    });
-            }
-        }
+        trim: true
     },
     slug: {
         type: String,
@@ -38,21 +24,16 @@ var productSchema = mongoose.Schema({
             return slug;
         },
         set: function(slug){
-            return slug.toString().toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w\-]+/g, '')
-                .replace(/\-\-+/g, '-')
-                .replace(/^-+/, '')
-                .replace(/-+$/, '');
+            return slugify(slug, {lowercase: true, separator: '-'});
         }
     },
     price: {
         type: Number,
-        get: function(num){return num;
-            //return (num/100).toFixed(2);
+        get: function(num){
+            return num;
         },
         set: function(num){
-            return num;
+            return (parseFloat(num)).toFixed(2);
         }
     },
     description: {
@@ -81,8 +62,7 @@ var productSchema = mongoose.Schema({
         value: String
     }],
     topic_id: {
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }],
-        default: null
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }]
     },
     created: {
         type: Date,

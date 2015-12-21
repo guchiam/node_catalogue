@@ -2,9 +2,9 @@ var router     = require("express").Router();
 var controller = require("./controllers/index");
 
 router.get('/products', controller.list);
-router.get('/product/:id', controller.getByOneProduct);
-router.post('/product', controller.create);
-router.delete('/product/:id', controller.delete);
-router.patch('/product/:id', controller.update);
+router.get('/products/:id', controller.getByOneProduct);
+router.post('/products', controller.create);
+router.delete('/products/:id', controller.delete);
+router.patch('/products/:id', controller.update);
 
 module.exports = router;
