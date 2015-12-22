@@ -1,11 +1,12 @@
 var Product = require('../models/product.js'),
     mongoose = require('lib/mongoose'),
-    HttpError = require('error').HttpError;
+    settings = require('config/settings'),
+    HttpError = require('error').HttpError,
     CatalogValidationError = require('error').CatalogValidationError;
 
 var controller = function() {
 
-    var perPage = 10;
+    var defaultOrderingField = 'title';
 
     this.getByOneProduct = function (req, res, next) {console.log(req.params.id);
 
@@ -92,13 +93,22 @@ var controller = function() {
     },
 
     this.list = function (req, res, next) {
-        var page = Math.max(0, req.query.page);
+        var page  = (typeof req.query.page !== 'undefined' && parseInt(req.query.page)) ? parseInt(req.query.page) : settings.pagination.firstPage,
+        perPage   = (typeof req.query.perPage !== 'undefined' && parseInt(req.query.perPage)) ? parseInt(req.query.perPage) : settings.pagination.perPage,
+        orderType = (
+                        typeof req.query.orderType !== 'undefined' &&
+                        req.query.orderType &&
+                        (settings.sortable.availableOrderTypes.indexOf(req.query.orderType) > -1)
+        ) ? req.query.orderType : settings.sortable.orderType,
+        order  = (typeof req.query.order !== 'undefined' && req.query.order) ? req.query.order : defaultOrderingField;
+
+
 
         Product.find()
             .limit(perPage)
             .skip(perPage * page)
             .sort({
-                title: 'asc'
+                title: orderType //TODO: fix it
             })
             .exec(function(err, products) {
                 if (err) return next(err);
