@@ -70,6 +70,9 @@ var productSchema = mongoose.Schema({
     }
 });
 
+productSchema.statics.sortingFields = ['title', 'price', 'created'];
+productSchema.statics.defaultOrderingField = 'title';
+
 var Product  = mongoose.model('Product', productSchema);
 
 module.exports = Product;

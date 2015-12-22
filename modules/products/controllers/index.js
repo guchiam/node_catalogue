@@ -6,8 +6,6 @@ var Product = require('../models/product.js'),
 
 var controller = function() {
 
-    var defaultOrderingField = 'title';
-
     this.getByOneProduct = function (req, res, next) {console.log(req.params.id);
 
         var params = (mongoose.Types.ObjectId.isValid(req.params.id)) ? {_id:req.params.id} : {slug:req.params.id};
@@ -100,16 +98,19 @@ var controller = function() {
                         req.query.orderType &&
                         (settings.sortable.availableOrderTypes.indexOf(req.query.orderType) > -1)
         ) ? req.query.orderType : settings.sortable.orderType,
-        order  = (typeof req.query.order !== 'undefined' && req.query.order) ? req.query.order : defaultOrderingField;
+        order  = (
+                        typeof req.query.order !== 'undefined' &&
+                        req.query.order &&
+                        (Product.sortingFields.indexOf(req.query.order) > -1)
+        ) ? req.query.order : Product.defaultOrderingField;
 
-
+        var sortParam = {};
+        sortParam[order] = orderType;
 
         Product.find()
             .limit(perPage)
             .skip(perPage * page)
-            .sort({
-                title: orderType //TODO: fix it
-            })
+            .sort(sortParam)
             .exec(function(err, products) {
                 if (err) return next(err);
                 res.json({ error: '', data: products });

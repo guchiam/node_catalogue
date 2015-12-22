@@ -1,11 +1,10 @@
 var Topic = require('../models/topic.js'),
     Product = require('../../products/models/product'),
+    settings = require('config/settings'),
     HttpError = require('error').HttpError;
     CatalogValidationError = require('error').CatalogValidationError;
 
 var controller = function() {
-
-    var perPage = 10;
 
     this.get = function (req, res, next) {
         Topic.findById(req.params.id, function(err, topic) {
@@ -104,14 +103,26 @@ var controller = function() {
 
     this.getproducts = function (req, res, next) {
 
-        var page = Math.max(0, req.query.page);
+        var page  = (typeof req.query.page !== 'undefined' && parseInt(req.query.page)) ? parseInt(req.query.page) : settings.pagination.firstPage,
+            perPage   = (typeof req.query.perPage !== 'undefined' && parseInt(req.query.perPage)) ? parseInt(req.query.perPage) : settings.pagination.perPage,
+            orderType = (
+                typeof req.query.orderType !== 'undefined' &&
+                req.query.orderType &&
+                (settings.sortable.availableOrderTypes.indexOf(req.query.orderType) > -1)
+            ) ? req.query.orderType : settings.sortable.orderType,
+            order  = (
+                typeof req.query.order !== 'undefined' &&
+                req.query.order &&
+                (Product.sortingFields.indexOf(req.query.order) > -1)
+            ) ? req.query.order : Product.defaultOrderingField;
+
+        var sortParam = {};
+        sortParam[order] = orderType;
 
         Product.find({"topic_id": req.params.id})
             .limit(perPage)
             .skip(perPage * page)
-            .sort({
-                title: 'asc'
-            })
+            .sort(sortParam)
             .exec(function(err, products) {
                 if (err) return next(err);
                 res.json({ error: '', data: products });
