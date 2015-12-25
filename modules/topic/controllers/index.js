@@ -1,8 +1,8 @@
 var Topic = require('../models/topic.js'),
     Product = require('../../products/models/product'),
-    settings = require('config/settings'),
-    HttpError = require('error').HttpError;
-    CatalogValidationError = require('error').CatalogValidationError;
+    settings = require('../../../config/settings'),
+    HttpError = require('../../../error').HttpError;
+    CatalogValidationError = require('../../../error').CatalogValidationError;
 
 var controller = function() {
 

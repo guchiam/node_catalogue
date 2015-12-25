@@ -1,5 +1,5 @@
 var express  = require('express'),
-    config   = require("config"),
+    config   = require("./config"),
     bodyParser = require('body-parser'),
     expressValidator = require('express-validator');
 
@@ -24,7 +24,7 @@ app.use(expressValidator({
     }
 }));
 
-require('config/routers')(app);
+require('./config/routers')(app);
 
 process.on('uncaughtException', function(err) {
     console.log('Threw Exception: ', err);

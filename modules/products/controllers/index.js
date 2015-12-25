@@ -1,8 +1,8 @@
 var Product = require('../models/product.js'),
-    mongoose = require('lib/mongoose'),
-    settings = require('config/settings'),
-    HttpError = require('error').HttpError,
-    CatalogValidationError = require('error').CatalogValidationError;
+    mongoose = require('../../../lib/mongoose'),
+    settings = require('../../../config/settings'),
+    HttpError = require('../../../error').HttpError,
+    CatalogValidationError = require('../../../error').CatalogValidationError;
 
 var controller = function() {
 

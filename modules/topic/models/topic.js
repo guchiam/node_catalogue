@@ -1,4 +1,4 @@
-var mongoose = require('lib/mongoose');
+var mongoose = require('../../../lib/mongoose');
 
 var topicSchema = mongoose.Schema({
     name: {

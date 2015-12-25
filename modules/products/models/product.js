@@ -1,6 +1,6 @@
-var mongoose = require('lib/mongoose'),
+var mongoose = require('../../../lib/mongoose'),
     slugify = require('transliteration').slugify,
-    CatalogValidationError = require('error').CatalogValidationError;
+    CatalogValidationError = require('../../../error').CatalogValidationError;
 
 var productSchema = mongoose.Schema({
     title: {

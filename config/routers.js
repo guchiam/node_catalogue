@@ -1,10 +1,10 @@
-var HttpError = require('error').HttpError,
-    CatalogValidationError = require('error').CatalogValidationError,
-    mongoose = require('lib/mongoose');
+var HttpError = require('../error').HttpError,
+    CatalogValidationError = require('../error').CatalogValidationError,
+    mongoose = require('../lib/mongoose');
 
 module.exports = function(app) {
-    app.use(require("modules/topic/router"));
-    app.use(require("modules/products/router"));
+    app.use(require("../modules/topic/router"));
+    app.use(require("../modules/products/router"));
 
     app.use(errorHandler);
 
